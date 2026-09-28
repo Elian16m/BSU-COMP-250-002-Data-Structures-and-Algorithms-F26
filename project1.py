@@ -24,7 +24,7 @@ inventory = {
 user_product = input("Enter the name of the product you want to purchase: ")
 product_amount = int(input("How many you want to purchase: "))
 
-if user_product not in inventory:
+if user_product not in inventory: #I am looking for the user input, AND check if it is not in inventory.
     print(f"We don't have {user_product} in the inventory.")
 elif product_amount <= inventory[user_product]:
     inventory[user_product] -= product_amount
