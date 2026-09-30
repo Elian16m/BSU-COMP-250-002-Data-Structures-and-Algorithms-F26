@@ -21,13 +21,13 @@ inventory = {
     "keyboard": 7,
     "headphones": 10
 }
-user_product = input("Enter the name of the product you want to purchase: ")
+user_product = input("Enter the name of the product you want to purchase: ").strip().lower()
 product_amount = int(input("How many you want to purchase: "))
 
 if user_product not in inventory: #I am looking for the user input, AND check if it is not in inventory.
     print(f"We don't have {user_product} in the inventory.")
 elif product_amount <= inventory[user_product]:
-    inventory[user_product] -= product_amount
+    inventory[user_product] -= product_amount #this one is 
     print(f"Updated quantity: {inventory[user_product]}")
 elif product_amount > inventory[user_product]:
     print(f"There is not enough {user_product} in the inventory .")
