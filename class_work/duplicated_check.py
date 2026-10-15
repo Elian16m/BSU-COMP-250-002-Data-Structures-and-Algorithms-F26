@@ -4,3 +4,7 @@ def has_duplicates(a):
             if a[i] == a[j]:
                 return True
     return False
+
+a = ["x", "y", "z", "b", "f"]
+
+print(has_duplicates(a))
