@@ -156,3 +156,37 @@ def main():
             print("Invalid option.")
 
 main()
+
+'''
+Steps 6 & 7: I wasn't sure how to continue for step 6, 
+so I will try to write what I will have done for these steps.
+
+First, I will write a function with def get_int, 
+this function works as an error catcher, and it only gives a number if it falls between low and high.
+I will have a while loop so the user needs to enter the IP and the description.
+
+Step 7: Time Complexity Analysis
+1. Add a regular alert (severity 1 to 4)
+O(1); it is just adding to the back of the deque, so it is constant
+
+2. Add a critical alert (severity 5)
+O(1); this is also just adding to the deque, so it is constant
+
+3. Resolve the next alert
+O(1); This is removing from the deque, so it is constant.
+
+4. Undo the last resolution
+O(1); This pops from the histoy os the list, so it is constant.
+
+5. Search for an alert by ID
+O(n); This function has a loop to check the IDs.
+
+6. If the queue were a regular Python list and you resolved alerts by removing the item at
+index 0, what would the Big-O of resolving become, and why?
+O(n) because if the regular list is used, Python forces every single item to shift left.
+
+7. Your recursive functions could have been written with loops. Give one reason a loop
+might be the better choice in a real SOC tool that handles thousands of alerts.
+Loops use a constant amount of memory, and recursive functions create a new stack every call,
+wasting a lot of memory, and it can crash the program with an overflow error if it's too big.
+'''
