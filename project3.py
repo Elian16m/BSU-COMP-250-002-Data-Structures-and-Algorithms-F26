@@ -121,27 +121,27 @@ class BinarySearchTree: #this class keeps the root and all the tree methods.
 def print_student(node): #this is the format of how we show a student.
     print(f"ID: {node.student_id} | Name: {node.name} | Major: {node.major}")
 
-def get_int(message): #this works as an error catcher, it keeps asking until the user types a whole number.
+def get_int(message): #this works as an error catcher, it keeps asking until the we type a whole number.
     while True: #the loop only stops when we return a number.
         try:
             return int(input(message)) #if the input can become an int, we give it back and the function ends.
-        except ValueError: #if the user types letters or something else, int() gives an error and we come here.
+        except ValueError: #if the we type letters or something else, int() gives an error
             print("Invalid input. Please enter a whole number.")
 
-def get_text(message): #this one does not let the user leave it empty.
+def get_text(input_text): #this works until it is not empty
     while True:
-        return input(message).strip() #strip takes out the extra spaces at the start and the end.
+        return input(input_text).strip()
 
 def show_menu(): #this is the menu that we get when we run the code.
     print()
-    print("===== STUDENT DIRECTORY =====")
-    print("1. Add a new student")
-    print("2. Search for a student by ID")
-    print("3. Display all students (DFS)")
-    print("4. Display all students (BFS)")
-    print("5. Display tree stats")
-    print("6. Display smallest and largest IDs")
-    print("7. Exit")
+    print("----- STUDENT TAP -----\n")
+    print("1. Add a new student\n")
+    print("2. Search for a student by ID\n")
+    print("3. Display all students (DFS)\n")
+    print("4. Display all students (BFS)\n")
+    print("5. Display tree stats\n")
+    print("6. Display smallest and largest IDs\n")
+    print("7. Exit\n")
 
 # step 6: each menu option has its own function.
 def add_student(tree): #option 1.
@@ -187,7 +187,7 @@ def display_stats(tree): #option 5.
     print(f"Total students: {tree.count_nodes(tree.root)}") #we start counting from the root.
     print(f"Height of the tree: {tree.height(tree.root)}") #and we start the height from the root too.
 
-def display_smallest_largest(tree): #option 6.
+def display_m_l(tree): #option 6.
     print("Smallest ID:")
     print_student(tree.find_smallest())
     print("Largest ID:")
@@ -195,7 +195,7 @@ def display_smallest_largest(tree): #option 6.
 
 def main():
     tree = BinarySearchTree() #we make the tree here.
-    while True: #the menu keeps showing until the user picks 7.
+    while True: #the menu keeps showing until we use oction picks 7.
         show_menu()
         choice = get_int("Choose an option: ") #this only accepts whole numbers, so letters won't crash the program.
         if choice == 1:
@@ -209,10 +209,10 @@ def main():
         elif choice == 5:
             display_stats(tree)
         elif choice == 6:
-            display_smallest_largest(tree)
+            display_m_l(tree)
         elif choice == 7:
             print("Goodbye!")
-            break #this is the stop of the program to exit it.
+            break
         else: #if it is a number but not from 1 to 7, we end up here.
             print("Invalid option. Choose a number from 1 to 7.")
 
