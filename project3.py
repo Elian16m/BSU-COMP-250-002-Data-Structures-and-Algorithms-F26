@@ -18,10 +18,7 @@ class BinarySearchTree: #this class keeps the root and all the tree methods.
     def __init__(self):
         self.root = None #the tree starts empty, so there is no root yet.
 
-    def is_empty(self):
-        return self.root is None #this is True when there is no root, so the tree is empty.
-
-    def insert(self, student_id, name, major):
+    def insert_function(self, student_id, name, major):
         new_node = treeNode(student_id, name, major) #first we make the new node with the student info.
         if self.root is None: #if the tree is empty, the new student becomes the root.
             self.root = new_node
@@ -42,7 +39,7 @@ class BinarySearchTree: #this class keeps the root and all the tree methods.
                     return True
                 current = current.right #if the place is taken, we move to that node and keep going down.
 
-    def search(self, student_id):
+    def search_function(self, student_id):
         visited = [] #this list keeps the IDs we have check
         current = self.root #we start with the root note
         while current is not None:
@@ -70,21 +67,29 @@ class BinarySearchTree: #this class keeps the root and all the tree methods.
         print_student(node) 
         self.in_order(node.right) 
 
+    def post_order(self, node):
+        if node is None:
+            return
+        self.pre_order(node.left) 
+        self.pre_order(node.right)
+        print_student(node)
+
     # step 4: BFS, this one uses a queue (deque).
     def bfs(self):
         queue = deque([self.root]) #we start the queue with the root node.
         level = 1 #we make it level 1
         while queue: #this will run unitl the queue doesn't have a note
-            level_size = len(queue) 
-            ids_in_level = [] #this list will keep the IDs
-            for i in range(level_size):
-                node = queue.popleft() #takes the node from the front of the queue.
-                ids_in_level.append(str(node.student_id)) #this will turn the ID into a string 
-                if node.left:
-                    queue.append(node.left) #the children go to the back of the queue
-                if node.right:
-                    queue.append(node.right)
-            print(f"Level {level}: " + " ".join(ids_in_level)) #join puts all the IDs of the level in one line with spaces.
+            size = len(queue) 
+            ids_level = [] #this list will keep the IDs
+
+            for i in range(size):
+                current = queue.popleft() #takes the node from the front of the queue.
+                ids_level.append(str(current.student_id)) #this will turn the ID into a string 
+                if current.left:
+                    queue.append(current.left) #the children go to the back of the queue
+                if current.right:
+                    queue.append(current.right)
+            print(f"Level {level}: " + " ".join(ids_level)) #this join will puts all the IDs of the level in one line with spaces
             level += 1 #now we go to the next level.
 
     # step 5: tree stats, these use recursion
@@ -96,9 +101,9 @@ class BinarySearchTree: #this class keeps the root and all the tree methods.
     def height(self, node):
         if node is None: #base case, an empty place has a height of 0.
             return 0
-        left_height = self.height(node.left) #the height of the left side.
-        right_height = self.height(node.right) #the height of the right side.
-        return 1 + max(left_height, right_height) #we take the taller side and add 1 for this node. a tree with only a root gives 1.
+        left_height = self.height(node.left) + 1 #the height of the left side.
+        right_height = self.height(node.right) + 1#the height of the right side.
+        return max(left_height, right_height) #we take the taller side and add 1 for this node. a tree with only a root gives 1.
 
     def find_smallest(self):
         current = self.root #we start at the root.
@@ -125,7 +130,7 @@ def get_int(message): #this works as an error catcher, it keeps asking until the
 
 def get_text(message): #this one does not let the user leave it empty.
     while True:
-        text = input(message).strip() #strip takes out the extra spaces at the start and the end.
+        return input(message).strip() #strip takes out the extra spaces at the start and the end.
 
 def show_menu(): #this is the menu that we get when we run the code.
     print()
@@ -143,17 +148,14 @@ def add_student(tree): #option 1.
     student_id = get_int("Enter student ID: ") #get_int makes sure the ID is a whole number.
     name = get_text("Enter student name: ")
     major = get_text("Enter student major: ")
-    if tree.insert(student_id, name, major): #insert gives True if it was added and False if the ID was a duplicate.
+    if tree.insert_function(student_id, name, major): #insert gives True if it was added and False if the ID was a duplicate.
         print("Student added.")
     else:
         print(f"A student with ID {student_id} already exists. Student not added.")
 
 def search_student(tree): #option 2.
-    if tree.is_empty(): #if the tree is empty we show a message and stop, so it doesn't crash.
-        print("The tree is empty.")
-        return
     student_id = get_int("Enter the student ID to search for: ")
-    found, visited = tree.search(student_id) #search gives back two things, the node (or None) and the list of IDs we visited.
+    found, visited = tree.search_function(student_id) #search gives back two things, the node (or None) and the list of IDs we visited.
     if found is None:
         print("Student not found.")
     else:
@@ -163,37 +165,29 @@ def search_student(tree): #option 2.
     print(f"Total nodes checked: {len(visited)}") #the length of the list is the number of nodes we checked.
 
 def display_dfs(tree): #option 3.
-    if tree.is_empty():
-        print("The tree is empty.")
-        return
     print("1. Pre-order")
     print("2. In-order")
+    print("3. Post-order")
     choice = get_int("Choose a traversal (1-3): ")
-    while choice < 1 or choice > 3: #this will let you pick 1 or  2
+    while choice < 1 or choice > 3: #this will let you pick 1 or 3
         print("Invalid choice.")
-        choice = get_int("Choose a traversal (1-2): ")
+        choice = get_int("Choose a traversal (1-3): ")
     if choice == 1:
-        tree.preorder(tree.root) #we send the root to start the recursion.
+        tree.pre_order(tree.root) #we send the root to start the recursion.
     elif choice == 2:
-        tree.inorder(tree.root)
+        tree.in_order(tree.root)
+    else:
+        tree.post_order(tree.root)
+
 
 def display_bfs(tree): #option 4.
-    if tree.is_empty():
-        print("The tree is empty.")
-        return
     tree.bfs()
 
 def display_stats(tree): #option 5.
-    if tree.is_empty():
-        print("The tree is empty.")
-        return
     print(f"Total students: {tree.count_nodes(tree.root)}") #we start counting from the root.
     print(f"Height of the tree: {tree.height(tree.root)}") #and we start the height from the root too.
 
 def display_smallest_largest(tree): #option 6.
-    if tree.is_empty():
-        print("The tree is empty.")
-        return
     print("Smallest ID:")
     print_student(tree.find_smallest())
     print("Largest ID:")
@@ -234,7 +228,7 @@ Search for 80: 50 - 70 - 80, so it checked 3 nodes.
 Second tree: I added 10, 20, 30, 40, 50, 60, 70.
 Search for 70: 10 - 20 - 30 - 40 - 50 - 60 - 70, so it checked 7 nodes.
 
-In the balanced tree, every step down throws away out half of the
+In the balanced tree, every step down throws away half of the
 students that are left, so the number of steps is log n. With 7 students,
 log n is 3, and that is why we only checked 3 nodes.
 In the second tree, every new ID was bigger than the one before it, so every student
